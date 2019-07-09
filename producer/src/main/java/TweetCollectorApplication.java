@@ -19,11 +19,11 @@ public class TweetCollectorApplication {
         String port = Optional.ofNullable(System.getenv("PORT")).orElse("8080");
 
         // Inicia o servidor HTTP
-        URI baseUri = UriBuilder.fromUri("http://" + hostname + "/tweets/collector").port(Integer.parseInt(port)).build();
+        URI baseUri = UriBuilder.fromUri("http://" + hostname + "/").port(Integer.parseInt(port)).build();
         ResourceConfig config = new ResourceConfig(TweetCollectorResource.class);
         config.register(new InjectionBinder());
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
-        logger.log(Level.INFO, "Aplicação está disponível em {0}", baseUri.toString());
+        logger.log(Level.INFO, "Aplicação está disponível em {0}" + "tweets/collector", baseUri.toString());
 
         // Adiciona um shutdown hook para terminar o serviço
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

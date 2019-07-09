@@ -19,13 +19,20 @@ public class TweetDeserializer implements Deserializer<Tweet> {
 
     @Override
     public Tweet deserialize(String topic, byte[] bytes) {
-        Tweet tweet = null;
+        Tweet twtRef = null;
         try {
-            tweet = mapper.readValue(bytes, Tweet.class);
+            twtRef = mapper.readValue(bytes, Tweet.class);
+            System.out.println("TweetConsumed = " + twtRef.getId() + ", "
+                    + twtRef.getTweetDate() + ", "
+                    + twtRef.getUsername() + ", "
+                    + twtRef.getTweetText() + ", "
+                    + twtRef.getSource() + ", "
+                    + twtRef.isTruncated() + ", "
+                    + twtRef.isFavorited());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return tweet;
+        return twtRef;
     }
 
     @Override

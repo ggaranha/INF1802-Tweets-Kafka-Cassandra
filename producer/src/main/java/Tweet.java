@@ -27,13 +27,16 @@ public class Tweet implements Status{
 
     }
 
-    public Tweet(long id, LocalDate td, String un, String tt, double lat, double lon, String source, boolean truncated, boolean favorited)
+    public Tweet(long id, LocalDate td, String un, String tt, GeoLocation geo, String source, boolean truncated, boolean favorited)
     {
         this.id = id;
         tweetUsername = un;
         tweetText = tt;
         tweetCreatedDate = td;
-        tweetGeo = new GeoLocation(lat, lon);
+        if(geo != null)
+        {
+            tweetGeo = geo;
+        }
         tweetSource = source;
         isTweetFavorited = favorited;
         isTweetTruncated = truncated;

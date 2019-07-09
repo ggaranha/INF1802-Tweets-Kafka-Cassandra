@@ -4,6 +4,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import com.datastax.driver.core.LocalDate;
 import twitter4j.*;
+import twitter4j.StatusListener;
+import java.util.Date;
+import java.util.Calendar;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -13,11 +16,13 @@ public class TweetListener implements StatusListener {
 
     private KafkaProducer<String,Tweet> producer;
     private String topicName = "tweets-input";
-    private String boostrap_server = "localhost:9092";
+    private String boostrap_server = "localhost:8080";
 
-    public static LocalDate getDate(String date) {
-        java.time.LocalDate jtld = java.time.LocalDate.parse(date);
-        return LocalDate.fromYearMonthDay(jtld.getYear(), jtld.getMonthValue(), jtld.getDayOfMonth());
+    public static LocalDate getDate(Date date) {
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        LocalDate dt = LocalDate.fromYearMonthDay(cl.get(Calendar.YEAR), date.getMonth(), date.getDay());
+        return dt;
     }
 
     public TweetListener() {
@@ -36,13 +41,21 @@ public class TweetListener implements StatusListener {
 
     @Override
     public void onStatus(Status status) {
-        Tweet t = new Tweet(status.getId(), getDate(status.getCreatedAt().toString()), status.getUser().getScreenName(),
-                status.getText(), status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude(),
+        Tweet twtRef = new Tweet(status.getId(), getDate(status.getCreatedAt()), status.getUser().getScreenName(),
+                status.getText(), status.getGeoLocation(),
                 status.getSource(), status.isTruncated(), status.isFavorited());
+
+        System.out.println("TweetProduced = " + twtRef.getId() + ", "
+                + twtRef.getTweetDate() + ", "
+                + twtRef.getUsername() + ", "
+                + twtRef.getTweetText() + ", "
+                + twtRef.getSource() + ", "
+                + twtRef.isTruncated() + ", "
+                + twtRef.isFavorited());
         // Enviar as mensagens
-        ProducerRecord<String, Tweet> record = new ProducerRecord<>( topicName, t);
+        ProducerRecord<String, Tweet> record = new ProducerRecord<>( topicName, twtRef);
         producer.send(record);
-        //logger.info(t.getLanguage() + "--> " + t.toString());
+        logger.info(twtRef.getLang() + "--> " + twtRef.toString());
     }
 
     @Override

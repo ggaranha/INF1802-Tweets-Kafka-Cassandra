@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TweetConsumerLifecycleManager implements LifecycleManager, Serializable {
-    private static final String KAFKA_CLUSTER = System.getenv().getOrDefault("KAFKA_CLUSTER", "localhost:9092");
+    private static final String KAFKA_CLUSTER = System.getenv().getOrDefault("KAFKA_CLUSTER", "localhost:9080");
     private static final String CONSUMER_GROUP = "tweet-application";
     private static final String TOPIC_NAME = "tweets-input";
     private static final Logger logger = LoggerFactory.getLogger(TweetConsumerLifecycleManager.class.getName());
@@ -40,12 +40,13 @@ public class TweetConsumerLifecycleManager implements LifecycleManager, Serializ
                 public void run() {
                     try {
                         consumer.subscribe(Arrays.asList(TOPIC_NAME));
-                        logger.info("Consumidor subscrito no tópico: ", TOPIC_NAME);
+                        logger.info("Consumidor subscrito no tópico: " + TOPIC_NAME);
                         while (true) {
                             ConsumerRecords<String, Tweet> records = consumer.poll(Duration.ofMillis(1000));
                             for (ConsumerRecord<String, Tweet> record : records) {
                                 Tweet tweet = record.value();
                                 logger.info("Consumindo do Kafka o Tweet: " + tweet);
+
                             }
                         }
                     } catch (WakeupException e) {

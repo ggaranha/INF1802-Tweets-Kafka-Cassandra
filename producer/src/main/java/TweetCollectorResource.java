@@ -23,7 +23,9 @@ public class TweetCollectorResource {
             manager.start();
             r = Response.ok("Coletor de Twitter iniciado")
                     .build();
+            System.out.println("Coletor iniciado - teste");
         } catch (Exception ex) {
+            System.out.println("Coletor erro - teste");
             logger.log(Level.SEVERE, null, ex);
             r = Response.serverError().build();
         }

@@ -15,11 +15,17 @@ public class TweetLifecycleManager implements LifecycleManager, Serializable {
     private final FilterQuery query;
     private final TweetListener listener;
 
+    String _consumerKey = "QBTNu4wt8vWDsGVYF16fInSs5";
+    String _consumerSecret = "Uaxc934jyI2CoSq4810HjcgHYL3sG9yYc01iStuW5rXo3v6rSr";
+    String _accessToken = "805917465758892036-Zj2hU6t1ecE4qyP0HjxF9X8pIlaqkvG";
+    String _accessTokenSecret = "1Es3vYrUfkOeGG48HFHgymU2rabqwLAnw5UUMOGoAkP0N";
+
+    private String tracked_terms;
+
     public TweetLifecycleManager() {
-        String _consumerKey = System.getenv().get("QBTNu4wt8vWDsGVYF16fInSs5");
-        String _consumerSecret = System.getenv().get("Uaxc934jyI2CoSq4810HjcgHYL3sG9yYc01iStuW5rXo3v6rSr");
-        String _accessToken = System.getenv().get("805917465758892036-Zj2hU6t1ecE4qyP0HjxF9X8pIlaqkvG");
-        String _accessTokenSecret = System.getenv().get("1Es3vYrUfkOeGG48HFHgymU2rabqwLAnw5UUMOGoAkP0N");
+
+
+        String terms = "futebol,bolsonaro";
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.setOAuthConsumerKey(_consumerKey)
@@ -31,9 +37,10 @@ public class TweetLifecycleManager implements LifecycleManager, Serializable {
         listener = new TweetListener();
         twitterStream.addListener(listener);
 
-        String tracked_terms = System.getenv().getOrDefault("TWITTER_TRACKED_TERMS", "Trump");
+        String tracked_terms  = terms;
         query = new FilterQuery();
         query.track(tracked_terms.split(","));
+        //twitterStream.filter(query);
     }
 
     public void start()  {
