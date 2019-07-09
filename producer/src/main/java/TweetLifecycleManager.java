@@ -15,10 +15,10 @@ public class TweetLifecycleManager implements LifecycleManager, Serializable {
     private final FilterQuery query;
     private final TweetListener listener;
 
-    String _consumerKey = "QBTNu4wt8vWDsGVYF16fInSs5";
-    String _consumerSecret = "Uaxc934jyI2CoSq4810HjcgHYL3sG9yYc01iStuW5rXo3v6rSr";
-    String _accessToken = "805917465758892036-Zj2hU6t1ecE4qyP0HjxF9X8pIlaqkvG";
-    String _accessTokenSecret = "1Es3vYrUfkOeGG48HFHgymU2rabqwLAnw5UUMOGoAkP0N";
+    String _consumerKey = "CONSUMER_KEY";
+    String _consumerSecret = "CONSUMER_SECRET";
+    String _accessToken = "TOKEN_KEY";
+    String _accessTokenSecret = "TOKEN_SECRET";
 
     private String tracked_terms;
 
